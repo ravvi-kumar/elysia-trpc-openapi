@@ -9,29 +9,29 @@ import { openapi } from '@elysiajs/openapi'
 import { TrpcOpenAPI } from './lib/trpc-openapi'
 
 const app = new Elysia()
-.use(openapi({
-	documentation: {
-		info:{
-			title: 'tRPC + Better Auth',
-			version: '0.0.1',
-			description: 'tRPC + Better Auth',
-			license: {
-				name: 'MIT',
+	.use(openapi({
+		documentation: {
+			info: {
+				title: 'tRPC + Better Auth',
+				version: '0.0.1',
+				description: 'tRPC + Better Auth',
+				license: {
+					name: 'MIT',
+				},
 			},
-		},
-		components: {...TrpcOpenAPI.components, ...(await OpenAPI.components)},
-		paths: {...TrpcOpenAPI.getPaths(''), ...(await OpenAPI.getPaths())}
-	}
-})) 
-.use(
-	cors({
-		origin: process.env.CORS_ORIGIN || "",
-		methods: ["GET", "POST", "OPTIONS"],
-		allowedHeaders: ["Content-Type", "Authorization"],
-		credentials: true,
-	}),
-)
-.mount("/auth",auth.handler)
+			components: { ...TrpcOpenAPI.components, ...(await OpenAPI.components) },
+			paths: { ...TrpcOpenAPI.getPaths(''), ...(await OpenAPI.getPaths()) }
+		}
+	}))
+	.use(
+		cors({
+			origin: process.env.CORS_ORIGIN || "",
+			methods: ["GET", "POST", "OPTIONS"],
+			allowedHeaders: ["Content-Type", "Authorization"],
+			credentials: true,
+		}),
+	)
+	.mount("/auth", auth.handler)
 	.all("/trpc/*", async (context) => {
 		const res = await fetchRequestHandler({
 			endpoint: "/trpc",
@@ -40,6 +40,10 @@ const app = new Elysia()
 			createContext: () => createContext({ context }),
 		});
 		return res;
+	}, {
+		detail: {
+			hide: true
+		}
 	})
 	.get("/", () => "OK")
 	.listen(3000, () => {
