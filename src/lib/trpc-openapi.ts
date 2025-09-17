@@ -3,8 +3,8 @@ import { appRouter } from "../routers";
 
 export const openApiDocument = generateOpenApiDocument(appRouter, {
 	title: 'tRPC OpenAPI',
-	version: '1.0.0',
-	baseUrl: 'http://localhost:3000',
+	version: '0.0.1',
+	baseUrl: Bun.env.BETTER_AUTH_URL || 'http://localhost:8000',
 });
 
 export const TrpcOpenAPI = {

@@ -13,7 +13,7 @@ export const auth = betterAuth({
 		schema: schema,
 	}),
 	plugins: [openAPI()],
-	trustedOrigins: [process.env.CORS_ORIGIN || ""],
+	trustedOrigins: [Bun.env.CORS_ORIGIN || ""],
 	emailAndPassword: {
 		enabled: true,
 	},

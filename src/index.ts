@@ -25,7 +25,7 @@ const app = new Elysia()
 	}))
 	.use(
 		cors({
-			origin: process.env.CORS_ORIGIN || "",
+			origin: Bun.env.CORS_ORIGIN || "",
 			methods: ["GET", "POST", "OPTIONS"],
 			allowedHeaders: ["Content-Type", "Authorization"],
 			credentials: true,
@@ -46,6 +46,6 @@ const app = new Elysia()
 		}
 	})
 	.get("/", () => "OK")
-	.listen(3000, () => {
-		console.log("Server is running on http://localhost:3000");
+	.listen(Bun.env.PORT || 8000, () => {
+		console.log("Server is running on http://localhost:" + Bun.env.PORT || 8000);
 	});
